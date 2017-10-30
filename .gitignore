@@ -1,0 +1,10 @@
+.bundle
+/vendor/bundle
+
+history.txt
+
+# user config
+config.yml
+
+# RubyMine
+.idea
