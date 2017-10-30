@@ -2,9 +2,23 @@ require 'nokogiri'
 require 'yaml'
 require 'CGI'
 
+HISTORY_FILE = 'history.txt'
+
+def had_history(url)
+  %x(touch #{HISTORY_FILE})
+  count = %x(grep -c "#{url}" #{HISTORY_FILE})
+  count.to_i != 0
+end
+
+def register_history(url)
+  %x(touch #{HISTORY_FILE})
+  %x(echo "#{url}" >> #{HISTORY_FILE})
+end
+
 CONFIG_YAML = 'config.yml'
 
 def notice(data)
+  return if had_history(data[:uri])
   config = YAML.load_file(CONFIG_YAML)
   text = CGI.escape("#{data[:title]} : #{data[:uri]}")
   post_api = ["https://slack.com/api/chat.postMessage?",
@@ -13,6 +27,7 @@ def notice(data)
     "&text=", text].join('')
   p post_api
   %x(curl "#{post_api}")
+  register_history(data[:uri])
 end
 
 HOST_URI = "http://gamebiz.jp"
