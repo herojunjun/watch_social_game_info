@@ -22,3 +22,10 @@ https://github.com/herojunjun/watch_social_game_info/commit/03711634ff19d061f309
 https://github.com/herojunjun/watch_social_game_info/commit/a0689fa40448e33521a904692947acbe3319eec7
 - 過去に通知したものを無視する
 https://github.com/herojunjun/watch_social_game_info/commit/80d50410fd80b3c55d1c4213c7ae2b6d762a6eb1
+
+# crontab に登録する
+
+```
+# 毎時0分に main.rb を実行する例
+0 * * * * /bin/bash -lc 'cd ~/RubymineProjects/watch_social_game_info && bundle exec ruby main.rb' > ~/cronlog/watch_social_game_info.log 2> ~/cronlog/watch_social_game_info.err
+```
